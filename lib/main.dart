@@ -6,6 +6,7 @@ import 'package:app_links/app_links.dart';
 import 'navigation/auth_gate.dart';
 import 'navigation/app_navigator.dart';
 import 'pages/auth/reset_password_page.dart';
+import 'theme/app_theme.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -89,6 +90,7 @@ class _LivkitAppState extends State<LivkitApp> {
     return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
+      theme: AppTheme.darkTheme,
       home: const AuthGate(),
     );
   }
