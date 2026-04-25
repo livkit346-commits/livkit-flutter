@@ -148,7 +148,7 @@ class _StreamerPageState extends State<StreamerPage>
     if (_isEnding) return;
     _isEnding = true;
 
-    final streamingService = StreamingService(accessToken: widget.accessToken);
+    final streamingService = StreamingService();
 
     try {
       await streamingService.endLiveStream(streamId: widget.streamId);

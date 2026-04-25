@@ -21,7 +21,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
   @override
   void initState() {
     super.initState();
-    _streamingService = StreamingService(accessToken: widget.accessToken);
+    _streamingService = StreamingService();
   }
 
   Future<void> _performSearch() async {

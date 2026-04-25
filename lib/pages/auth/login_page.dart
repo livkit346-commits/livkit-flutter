@@ -99,17 +99,6 @@ class _AnimatedLoginPageState extends State<AnimatedLoginPage>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF0F2027),
-              Color(0xFF203A43),
-              Color(0xFF2C5364),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -174,7 +163,6 @@ class _AnimatedLoginPageState extends State<AnimatedLoginPage>
                       child: ElevatedButton(
                         onPressed: isLoading ? null : _login,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurpleAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
@@ -236,16 +224,8 @@ class _AnimatedLoginPageState extends State<AnimatedLoginPage>
     return TextField(
       controller: controller,
       obscureText: isPassword,
-      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white.withOpacity(0.1),
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white54),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide.none,
-        ),
       ),
     );
   }

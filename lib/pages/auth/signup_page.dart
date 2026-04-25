@@ -110,13 +110,6 @@ class _SignupPageState extends State<SignupPage>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -150,7 +143,6 @@ class _SignupPageState extends State<SignupPage>
                         child: ElevatedButton(
                           onPressed: isLoading ? null : _signup,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurpleAccent,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                           ),
                           child: isLoading
@@ -190,13 +182,8 @@ class _SignupPageState extends State<SignupPage>
     return TextField(
       controller: controller,
       obscureText: isPassword,
-      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white.withOpacity(0.1),
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white54),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
       ),
     );
   }

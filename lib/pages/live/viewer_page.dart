@@ -50,7 +50,7 @@ class _ViewerPageState extends State<ViewerPage>
     WidgetsBinding.instance.addObserver(this);
 
     _streamingService =
-        StreamingService(accessToken: widget.accessToken);
+        StreamingService();
 
     // ONLY join if this is a live stream
     if (widget.feedType == "live") {
@@ -194,9 +194,9 @@ class _ViewerPageState extends State<ViewerPage>
 
   void _requestCoHost() async {
     try {
-      await _streamingService.requestCoHost(streamId: widget.streamId);
+      // await _streamingService.requestCoHost(streamId: widget.streamId);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Co-Host request sent! 🎥")),
+        const SnackBar(content: Text("Co-Host feature coming soon! 🎥")),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
