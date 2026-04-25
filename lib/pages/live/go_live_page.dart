@@ -25,9 +25,7 @@ class _GoLivePageState extends State<GoLivePage> {
 
     setState(() => _isLoading = true);
 
-    final streamingService = StreamingService(
-      accessToken: widget.accessToken,
-    );
+    final streamingService = StreamingService();
 
     try {
       final response = await streamingService.createLiveStream(

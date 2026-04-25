@@ -63,7 +63,6 @@ class ChatService {
 
     try {
       final auth = AuthService();
-      await auth.refreshIfNeeded();
       final token = await auth.getAccessToken();
 
       if (token == null) {
