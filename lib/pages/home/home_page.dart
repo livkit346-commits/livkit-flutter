@@ -29,8 +29,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _streamingService =
-        StreamingService(accessToken: widget.accessToken);
+    _streamingService = StreamingService();
     _feedFuture = _loadFeed();
   }
 

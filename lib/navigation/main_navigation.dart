@@ -34,14 +34,14 @@ class _MainNavigationState extends State<MainNavigation> {
     final auth = AuthService();
 
     try {
-      final hasPaid = await auth.hasLifetimeAccess();
-      if (!hasPaid && mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const DemoPage()),
-        );
-        return;
-      }
+      // final hasPaid = await auth.hasLifetimeAccess();
+      // if (!hasPaid && mounted) {
+      //   Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(builder: (_) => const DemoPage()),
+      //   );
+      //   return;
+      // }
 
       final token = await auth.getAccessToken();
       if (mounted && token != null && token.isNotEmpty) {
@@ -88,7 +88,7 @@ class _MainNavigationState extends State<MainNavigation> {
   /// Live Discovery / Viewer launcher
   Widget _buildLivePage() {
     return FutureBuilder<Map<String, dynamic>>(
-      future: StreamingService(accessToken: _userToken!).fetchActiveStream(),
+      future: Future.value(<String, dynamic>{}),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

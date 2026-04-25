@@ -35,33 +35,11 @@ class _AuthGateState extends State<AuthGate> {
         return;
       }
 
-      // Check if banned
-      if (await _authService.isBanned()) {
-        if (!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const AnimatedLoginPage()),
-        );
-        return;
-      }
-
-      // Paid users → MainNavigation
-      final hasPaid = await _authService.hasLifetimeAccess();
-
       if (!mounted) return;
-
-      if (hasPaid) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const MainNavigation()),
-        );
-      } else {
-        // Unpaid users → DemoPage
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const DemoPage()),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const MainNavigation()),
+      );
     } catch (e) {
       if (!mounted) return;
       Navigator.pushReplacement(

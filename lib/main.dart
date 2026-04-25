@@ -14,8 +14,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   await Supabase.initialize(
-    url: 'https://pivljujvmsrqoenpndye.supabase.co',
-    anonKey: 'YOUR_SUPABASE_ANON_KEY', // Should ideally use a config file or env
+    url: 'https://zyvwjttwpeahzsokrjsx.supabase.co',
+    anonKey: 'sb_publishable_vyYIRxyd1sU4NVp4G0Dr-A_A4GVKg0t', // Fetched from true backend config
   );
 
   runApp(const LivkitApp());
