@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import '../../widgets/live_action.dart';
 import '../../widgets/tiktok_comments.dart';
@@ -14,7 +14,6 @@ class StreamerPage extends StatefulWidget {
   final String streamId;
   final String channelName;
   final String agoraToken;
-  final String accessToken;
   final String title;
   final String shareLink;
 
@@ -23,7 +22,6 @@ class StreamerPage extends StatefulWidget {
     required this.streamId,
     required this.channelName,
     required this.agoraToken,
-    required this.accessToken,
     this.title = "Live Now",
     this.shareLink = "",
   });
@@ -70,8 +68,9 @@ class _StreamerPageState extends State<StreamerPage>
   // ───────── PERMISSIONS + START ─────────
   Future<void> _initLive() async {
 
-    if (!Platform.isAndroid && !Platform.isIOS) {
-      print("Permissions skipped on unsupported platform"); // debug
+    if (kIsWeb) {
+      print("Permissions handled by browser"); 
+      await _initAgora();
       return;
     }
 

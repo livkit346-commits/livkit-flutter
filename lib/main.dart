@@ -1,94 +1,20 @@
-import 'dart:io';
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:app_links/app_links.dart';
-
-import 'navigation/auth_gate.dart';
-import 'navigation/app_navigator.dart';
-import 'pages/auth/reset_password_page.dart';
-import 'theme/app_theme.dart';
-
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'theme/app_theme.dart';
+import 'navigation/auth_gate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  await Supabase.initialize(
-    url: 'https://zyvwjttwpeahzsokrjsx.supabase.co',
-    anonKey: 'sb_publishable_vyYIRxyd1sU4NVp4G0Dr-A_A4GVKg0t', // Fetched from true backend config
-  );
-
   runApp(const LivkitApp());
 }
 
-
-class LivkitApp extends StatefulWidget {
+class LivkitApp extends StatelessWidget {
   const LivkitApp({super.key});
-
-  @override
-  State<LivkitApp> createState() => _LivkitAppState();
-}
-
-class _LivkitAppState extends State<LivkitApp> {
-  final AppLinks _appLinks = AppLinks();
-  StreamSubscription<Uri>? _linkSub;
-
-  @override
-  void initState() {
-    super.initState();
-    _initDeepLinks();
-  }
-
-  Future<void> _initDeepLinks() async {
-    try {
-      // 🔹 Cold start (app closed)
-      final Uri? initialUri = await _appLinks.getInitialLink();
-      if (initialUri != null) {
-        _handleUri(initialUri);
-      }
-
-      // 🔹 App already running / backgrounded
-      _linkSub = _appLinks.uriLinkStream.listen(
-        (Uri uri) {
-          _handleUri(uri);
-        },
-        onError: (_) {
-          // Ignore malformed links safely
-        },
-      );
-    } catch (_) {
-      // Fail silently – deep links should never crash the app
-    }
-  }
-
-  void _handleUri(Uri uri) {
-    if (uri.path == '/reset-password') {
-      final uid = uri.queryParameters['uid'];
-      final token = uri.queryParameters['token'];
-
-      if (uid != null && token != null) {
-        navigatorKey.currentState?.push(
-          MaterialPageRoute(
-            builder: (_) => ResetPasswordPage(
-              uid: uid,
-              token: token,
-            ),
-          ),
-        );
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    _linkSub?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey,
+      title: 'LivKit',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
       home: const AuthGate(),

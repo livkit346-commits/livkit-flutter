@@ -9,21 +9,18 @@ import 'package:share_plus/share_plus.dart';
 
 class ViewerPage extends StatefulWidget {
   final String streamId;
-  final String accessToken;
   final String title;
   final String feedType; // live | grace
 
   const ViewerPage({
     super.key,
     required this.streamId,
-    required this.accessToken,
     required this.title,
     required this.feedType,
   });
 
   @override
   State<ViewerPage> createState() => _ViewerPageState();
-
 }
 
 class _ViewerPageState extends State<ViewerPage>

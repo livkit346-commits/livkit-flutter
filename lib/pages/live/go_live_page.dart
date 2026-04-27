@@ -3,12 +3,7 @@ import '../../services/streaming_service.dart';
 import 'streamer_page.dart';
 
 class GoLivePage extends StatefulWidget {
-  final String accessToken; // Auth token
-
-  const GoLivePage({
-    super.key,
-    required this.accessToken,
-  });
+  const GoLivePage({super.key});
 
   @override
   State<GoLivePage> createState() => _GoLivePageState();
@@ -46,7 +41,6 @@ class _GoLivePageState extends State<GoLivePage> {
             streamId: stream["id"],
             channelName: response["channel_name"],
             agoraToken: response["agora_token"],
-            accessToken: widget.accessToken, // ✅ THIS WAS MISSING
             title: _titleController.text.trim().isEmpty
                 ? "Live Now"
                 : _titleController.text.trim(),

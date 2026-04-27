@@ -5,12 +5,7 @@ import 'friend_request_page.dart';
 import '../../services/friend_service.dart';
 import '../../services/auth_service.dart';
 class ChatPageList extends StatefulWidget {
-  final String token;
-
-  const ChatPageList({
-    super.key,
-    required this.token,
-  });
+  const ChatPageList({super.key});
 
   @override
   State<ChatPageList> createState() => _ChatPageListState();
@@ -25,7 +20,7 @@ class _ChatPageListState extends State<ChatPageList>
   String? _myUserId;
 
 
-  late final String userToken;
+
 
   bool hasPendingRequests = true;
 
@@ -40,8 +35,6 @@ class _ChatPageListState extends State<ChatPageList>
   @override
   void initState() {
     super.initState();
-
-    userToken = widget.token;
 
     _pageAnim = AnimationController(
       vsync: this,

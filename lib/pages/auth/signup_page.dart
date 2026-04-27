@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart';
 import '../../services/auth_service.dart';
+import '../../theme/app_colors.dart';
+import 'login_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -9,100 +10,30 @@ class SignupPage extends StatefulWidget {
   State<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fade;
-  late Animation<Offset> _slide;
+class _SignupPageState extends State<SignupPage> {
+  final _username = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  bool _isLoading = false;
 
-  bool isLoading = false;
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
-
-  final AuthService _authService = AuthService();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _usernameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    );
-
-    _fade = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-    _slide = Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
-    _controller.forward();
-  }
-
-  Future<void> _signup() async {
-    final username = _usernameController.text.trim();
-    final email = _emailController.text.trim();
-    final password = _passwordController.text;
-    final confirm = _confirmPasswordController.text;
-
-    // Username validation
-    if (username.isEmpty || username.length < 3) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Username must be at least 3 characters")),
-      );
-      return;
-    }
-
-    // Email validation
-    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Enter a valid email")),
-      );
-      return;
-    }
-
-    // Password match check
-    if (password != confirm) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Passwords do not match")),
-      );
-      return;
-    }
-
-    setState(() => isLoading = true);
-
+  Future<void> _handleSignup() async {
+    if (_email.text.isEmpty || _password.text.isEmpty) return;
+    setState(() => _isLoading = true);
+    final auth = AuthService();
     try {
-      await _authService.signup(
-        username: username,
-        email: email,
-        password: password,
-      );
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Account created. Please login.")),
-      );
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const AnimatedLoginPage()),
-      );
+      await auth.signUp(_email.text.trim(), _password.text, _username.text.trim());
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Account created! Please check your email."), backgroundColor: AppColors.success));
+        Navigator.pop(context);
+      }
     } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString()), backgroundColor: AppColors.error));
+      }
     } finally {
-      if (mounted) setState(() => isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -110,80 +41,50 @@ class _SignupPageState extends State<SignupPage>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: AppColors.bgGradient,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
-            child: FadeTransition(
-              opacity: _fade,
-              child: SlideTransition(
-                position: _slide,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 60),
-                      const Text(
-                        "Create Account",
-                        style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text("Join and start live streaming", style: TextStyle(color: Colors.white70)),
-                      const SizedBox(height: 40),
-                      _inputField("Username", controller: _usernameController),
-                      const SizedBox(height: 20),
-                      _inputField("Email", controller: _emailController),
-                      const SizedBox(height: 20),
-                      _inputField("Password", isPassword: true, controller: _passwordController),
-                      const SizedBox(height: 20),
-                      _inputField("Confirm Password", isPassword: true, controller: _confirmPasswordController),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 52,
-                        child: ElevatedButton(
-                          onPressed: isLoading ? null : _signup,
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                          ),
-                          child: isLoading
-                              ? const SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                                )
-                              : const Text(
-                                  "CREATE ACCOUNT",
-                                  style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1),
-                                ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      Center(
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const AnimatedLoginPage()));
-                          },
-                          child: const Text("Already have an account? Login", style: TextStyle(color: Colors.white70)),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Create Account", style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold, color: Colors.white)),
+                  const Text("Join our community today", style: TextStyle(color: Colors.white70, fontSize: 16)),
+                  const SizedBox(height: 48),
+                  
+                  TextField(controller: _username, decoration: const InputDecoration(hintText: "Username")),
+                  const SizedBox(height: 20),
+                  TextField(controller: _email, decoration: const InputDecoration(hintText: "Email")),
+                  const SizedBox(height: 20),
+                  TextField(controller: _password, obscureText: true, decoration: const InputDecoration(hintText: "Password")),
+                  
+                  const SizedBox(height: 40),
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _handleSignup,
+                    child: _isLoading 
+                      ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                      : const Text("SIGN UP"),
                   ),
-                ),
+                  
+                  const SizedBox(height: 24),
+                  Center(
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("Already have an account? Login", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _inputField(String hint, {bool isPassword = false, required TextEditingController controller}) {
-    return TextField(
-      controller: controller,
-      obscureText: isPassword,
-      decoration: InputDecoration(
-        hintText: hint,
       ),
     );
   }

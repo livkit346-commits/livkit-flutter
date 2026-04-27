@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Website Exact Hex Mappings
-  static const Color primary = Color(0xFFE50914); // Netflix Red
-  static const Color primaryDark = Color(0xFFB70710); // Hover/Dark Red
+  // 🌘 Backgrounds - From sign-in.html gradient
+  static const List<Color> bgGradient = [
+    Color(0xFF0F2027),
+    Color(0xFF203A43),
+    Color(0xFF2C5364),
+  ];
   
-  static const Color background = Color(0xFF000000); // Pitch Black
-  static const Color surface = Color(0xFF161719); // Dark Gray for Cards/Nav
-  static const Color surfaceLight = Color(0xFF2B2F32); // Lighter Gray for highlights
+  static const Color background = Color(0xFF0F2027);
 
-  static const Color textPrimary = Color(0xFFFFFFFF);
-  static const Color textSecondary = Color(0xFFD1D0CF); // Muted gray text
+  // 🎨 Accents - From sign-in.html and admin portal
+  static const Color primary = Color(0xFF7C4DFF); // Purple
+  static const Color secondary = Color(0xFF4568DC); // Blue
+  static const Color surface = Color(0xFF1A1A1A);
   
-  static const Color border = Color(0xFF262525); // Subtle borders
-  
-  // Status Colors from Website
-  static const Color success = Color(0xFF14E788);
-  static const Color error = Color(0xFFEf6b72);
-  static const Color warning = Color(0xFFECBA12);
-  static const Color info = Color(0xFF007AFF);
+  // ⚪ Text
+  static const Color textPrimary = Colors.white;
+  static const Color textSecondary = Colors.white70;
+  static const Color textDisabled = Colors.white38;
+
+  // 🛑 Status
+  static const Color error = Color(0xFFFF6B6B);
+  static const Color success = Color(0xFF00C853);
 }

@@ -10,12 +10,7 @@ import '../live/feed_video.dart';
 import 'global_search_page.dart';
 
 class HomePage extends StatefulWidget {
-  final String accessToken;
-
-  const HomePage({
-    super.key,
-    required this.accessToken,
-  });
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -66,7 +61,6 @@ class _HomePageState extends State<HomePage> {
         MaterialPageRoute(
           builder: (_) => ViewerPage(
             streamId: item.streamId!,
-            accessToken: widget.accessToken,
             title: item.streamer ?? "Live Stream",
             feedType: item.type,
           ),
@@ -91,7 +85,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => GlobalSearchPage(accessToken: widget.accessToken),
+                  builder: (_) => const GlobalSearchPage(),
                 ),
               );
             },
